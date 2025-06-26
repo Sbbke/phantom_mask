@@ -148,3 +148,11 @@ type PurchaseDetails struct {
 	PreviousBalance float64 `json:"previous_balance"`
 	NewBalance      float64 `json:"new_balance"`
 }
+
+// 8. Health check response
+type HealthCheckResponse struct {
+	Status    string `json:"status"`
+	Timestamp string `json:"timestamp"`
+	Reason    string `json:"reason,omitempty"`
+	Details   gin.H  `json:"details,omitempty"`
+}
