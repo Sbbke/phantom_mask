@@ -13,7 +13,7 @@ Please read [`system_architecture.md`](./doc/system_architecture.md) for more de
 | [`data_flow.md`](./doc/data_flow.md) | Details on ETL + database migration logic and container init flow |
 | [`erd.md`](./doc/erd.md) | Entity-Relationship Diagram in Mermaid syntax |
 | [`deployment.md`](./doc/deployment.md) | Instructions for container orchestration via Docker Compose |
-| [`api_doc.md`](./doc/api.md) | REST API endpoint specs |
+| [`api_doc.md`](./doc/api_doc.md) | REST API endpoint specs |
 | [`testing.md`](./doc/testing.md) | How to run integration and unit tests |
 
 ---
