@@ -722,27 +722,47 @@ func (pc *PharmacyController) ProcessPurchase(c *gin.Context) {
 }
 
 // Add a health check endpoint to monitor database connectivity
-// POST /api/v1/pharmacies/health
+// GET /api/v1/pharmacies/health
 func (pc *PharmacyController) HealthCheck(c *gin.Context) {
-	if pc.db == nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "unhealthy", "reason": "database connection unavailable"})
-		return
-	}
-
-	// Test database connectivity
-	sqlDB, err := pc.db.DB()
-	if err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "unhealthy", "reason": "cannot access database"})
-		return
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx := c.Request.Context()
+	
+	// Since we moved DB nil check to middleware, we can assume DB exists
+	// But for health check, we want to explicitly verify connectivity
+	
+	// Test database connectivity with timeout
+	timeoutCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
-	if err := sqlDB.PingContext(ctx); err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "unhealthy", "reason": "database ping failed"})
+	// Get underlying SQL DB
+	sqlDB, err := pc.db.DB()
+	if err != nil {
+		c.JSON(http.StatusServiceUnavailable, global.ErrorResponse{
+			Error: "Database connection unavailable",
+			Code:  "DB_CONNECTION_ERROR",
+			Details: gin.H{
+				"error": err.Error(),
+			},
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "healthy"})
+	// Ping database to verify connectivity
+	if err := sqlDB.PingContext(timeoutCtx); err != nil {
+		c.JSON(http.StatusServiceUnavailable, global.ErrorResponse{
+			Error: "Database ping failed",
+			Code:  "DB_PING_FAILED",
+			Details: gin.H{
+				"error": err.Error(),
+			},
+		})
+		return
+	}
+
+	// Return healthy status
+	response := HealthCheckResponse{
+		Status:    "healthy",
+		Timestamp: time.Now().UTC().Format(time.RFC3339),
+	}
+	
+	c.JSON(http.StatusOK, response)
 }
