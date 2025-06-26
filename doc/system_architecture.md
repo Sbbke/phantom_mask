@@ -155,3 +155,13 @@ For future refactoring (if needed)
 
 ## API document ##
 Click [here](./api_doc.md) to API document 
+
+In addition to the requirements, I also added: 
+
++ Health check api
+
+> The Health Check endpoint provides a way to monitor the status and database connectivity of the Pharmacy API service. This endpoint is commonly used by load balancers, monitoring systems, and infrastructure tools to determine service availability.
+
++ Additional search type
+
+> In addition to the 'mask' and 'pharmacy', the Search API also accept 'user' type.
