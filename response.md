@@ -20,7 +20,7 @@ For a full overview and better navigation, please refer to the [README](README.m
   - Implemented at /api/v1/pharmacies/purchase
 ### A.2. API Document
 
-Please click [here](./api.md) to API document 
+Please click [here](./doc/api_doc.md) to API document 
 
 ### A.3. Import Data Commands
 Please run these two script commands to migrate the data into the database.
