@@ -49,7 +49,7 @@ func configurePharmacyRoutes() {
 		pharmacyGroup.POST("/transactions/summary", pc.GetTransactionSummary)
 		pharmacyGroup.POST("/search", pc.Search)
 		pharmacyGroup.POST("/purchase", pc.ProcessPurchase)
-		pharmacyGroup.GET("/health", pc.ProcessPurchase)
+		pharmacyGroup.GET("/health", pc.HealthCheck)
 		
 	}
 }
