@@ -290,7 +290,35 @@ Process a user purchases a mask from a pharmacy, and handle all relevant data ch
   "timestamp": "2025-06-25T23:53:26.517662852Z"
 }
 ```
+## 8. Health Check API
 
+**GET** /api/v1/pharmacies/health
+Checks the health status of the pharmacy service and its database connectivity.
+
+### Request:
+
+None
+
+### Response:
+
++ Success Response (200 OK)
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-06-26T10:30:00Z"
+}
+```
+
++ Failure Response (503 Service Unavailable)
+```json
+{
+  "error": "Database connection unavailable",
+  "code": "DB_CONNECTION_ERROR",
+  "details": {
+    "error": "connection refused"
+  }
+}
+```
 ## Error Response Format
 
 ### Validation Error:
