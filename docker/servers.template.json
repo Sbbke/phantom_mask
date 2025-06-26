@@ -1,0 +1,22 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "UserDB",
+      "Group": "Servers",
+      "Host": "postgres-user",
+      "Port": 5432,
+      "MaintenanceDB": "user",
+      "Username": "your_username",
+      "SSLMode": "prefer"
+    },
+    "2": {
+      "Name": "PharmacyDB",
+      "Group": "Servers",
+      "Host": "postgres-pharmacy",
+      "Port": 5432,
+      "MaintenanceDB": "pharmacy",
+      "Username": "your_username",
+      "SSLMode": "prefer"
+    }
+  }
+}

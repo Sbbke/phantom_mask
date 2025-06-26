@@ -1,0 +1,58 @@
+
+services:
+  postgres-pharmacy:
+    image: postgres:13.2-alpine
+    container_name: postgres-pharmacy
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_PHARMACY_DBNAME}
+      POSTGRES_USER: ${DB_PHARMACY_USER}
+      POSTGRES_PASSWORD: ${DB_PHARMACY_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_PHARMACY_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres-pharmacy:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+  postgres-user:
+    image: postgres:13.2-alpine
+    container_name: postgres-user
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_USER_DBNAME}
+      POSTGRES_USER: ${DB_USER_USER}
+      POSTGRES_PASSWORD: ${DB_USER_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres-user:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  pgadmin:
+      image: dpage/pgadmin4:latest
+      restart: always
+      environment:
+        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        PGADMIN_LISTEN_PORT: ${PGADMIN_LISTEN_PORT}
+      ports:
+          - "8888:80"
+      volumes:
+          - pgadmin-data:/var/lib/pgadmin
+          - ./servers.json:/pgadmin4/servers.json:ro
+
+networks:
+  default:
+    name: phantom-mask
+    external: true
+
+volumes:
+  postgres-pharmacy:
+    name: postgres_pharmacy
+  pgadmin-data:
+    name: pgadmin_data
+  postgres-user:
+    name: postgres_user

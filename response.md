@@ -1,73 +1,74 @@
 # Response
-> The Current content is an **example template**; please edit it to fit your style and content.
+
+For a full overview and better navigation, please refer to the [README](README.md).
+
 ## A. Required Information
 ### A.1. Requirement Completion Rate
-- [x] List all pharmacies open at a specific time and on a day of the week if requested.
-  - Implemented at xxx API.
-- [x] List all masks sold by a given pharmacy, sorted by mask name or price.
-  - Implemented at xxx API.
-- [x] List all pharmacies with more or less than x mask products within a price range.
-  - Implemented at xxx API.
-- [x] The top x users by total transaction amount of masks within a date range.
-  - Implemented at xxx API.
-- [x] The total number of masks and dollar value of transactions within a date range.
-  - Implemented at xxx API.
-- [x] Search for pharmacies or masks by name, ranked by relevance to the search term.
-  - Implemented at xxx API.
-- [x] Process a user purchases a mask from a pharmacy, and handle all relevant data changes in an atomic transaction.
-  - Implemented at xxx API.
+- [o] List all pharmacies open at a specific time and on a day of the week if requested.
+  - Implemented at /api/v1/pharmacies/open
+- [o] List all masks sold by a given pharmacy, sorted by mask name or price.
+  - Implemented at /api/v1/pharmacies/masks
+- [o] List all pharmacies with more or less than x mask products within a price range.
+  - Implemented at /api/v1/pharmacies/filter
+- [o] The top x users by total transaction amount of masks within a date range.
+  - Implemented at /api/v1/pharmacies/users/top
+- [o] The total number of masks and dollar value of transactions within a date range.
+  - Implemented at /api/v1/pharmacies/transactions/summary
+- [o] Search for pharmacies or masks by name, ranked by relevance to the search term.
+  - Implemented at /api/v1/pharmacies/search
+- [o] Process a user purchases a mask from a pharmacy, and handle all relevant data changes in an atomic transaction.
+  - Implemented at /api/v1/pharmacies/purchase
 ### A.2. API Document
-> Please describe how to use the API in the API documentation. You can edit by any format (e.g., Markdown or OpenAPI) or free tools (e.g., [hackMD](https://hackmd.io/), [postman](https://www.postman.com/), [google docs](https://docs.google.com/document/u/0/), or  [swagger](https://swagger.io/specification/)).
 
-Import [this](#api-document) json file to Postman.
+Please click [here](./api.md) to API document 
 
 ### A.3. Import Data Commands
 Please run these two script commands to migrate the data into the database.
 
 ```bash
-$ rake import_data:pharmacies[PATH_TO_FILE]
-$ rake import_data:users[PATH_TO_FILE]
+# Start the database & Run schema migrations and ETL/loading
+$ docker compose -f docker-compose-db.yaml up -d
+$ docker compose -f docker-compose-init.yaml up 
 ```
 ## B. Bonus Information
 
->  If you completed the bonus requirements, please fill in your task below.
 ### B.1. Test Coverage Report
 
-I wrote down the 20 unit tests for the APIs I built. Please check the test coverage report at [here](#test-coverage-report).
+I wrote unit tests for the system function, and some integration tests for the APIs endpoint (currently first API only).
 
 You can run the test script by using the command below:
-
 ```bash
-bundle exec rspec spec
+# unit test for etl helper 
+$ go test -v ./app/initial 
+# integration test, please run these command with db initialized
+$ go test test/integration/controllers/pharmacy_controller_test.go
+$ go test test/integration/middleware/middleware_test.go
 ```
 
+For test coverage, please run the command below:
+```bash
+$ go test -cover ./app/...
+```
 ### B.2. Dockerized
-Please check my Dockerfile / docker-compose.yml at [here](#dockerized).
 
-On the local machine, please follow the commands below to build it.
+On the local machine, please follow the commands below to run the service.
 
 ```bash
-$ docker build --build-arg ENV=development -p 80:3000 -t my-project:1.0.0 .  
-$ docker-compose up -d
-
-# go inside the container, run the migrate data command.
-$ docker exec -it my-project bash
-$ rake import_data:pharmacies[PATH_TO_FILE] 
-$ rake import_data:user[PATH_TO_FILE]
+# Build the image
+$ docker compose -f docker-compose.yaml build
+# Start the database 
+$ docker compose -f docker-compose-db.yaml up -d
+# Run schema migrations and ETL/loading
+$ docker compose -f docker-compose-init.yaml up --exit-code-from init-preprocess
+# Start the service
+$ docker compose -f docker-compose.yaml up
 ```
 
-### B.3. Demo Site Url
-
-The demo site is ready on [my AWS demo site](#demo-site-url); you can try any APIs on this demo site.
 
 ## C. Other Information
 
-### C.1. ERD
+### Table of contents
 
-My ERD [erd-link](#erd-link).
-
-### C.2. Technical Document
-
-For frontend programmer reading, please check this [technical document](technical-document) to know how to operate those APIs.
+Please click [`here`](./README.md).
 
 - --

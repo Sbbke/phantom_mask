@@ -1,0 +1,16 @@
+services:
+  phantom_be:
+    build:
+      context: ../Phantom_BE
+      dockerfile: Dockerfile
+    image: phantom-be:latest
+    env_file:
+      - .env
+    restart: on-failure
+    ports:
+      - "8080:8080"
+
+networks:
+  default:
+    name: phantom-mask
+    external: true

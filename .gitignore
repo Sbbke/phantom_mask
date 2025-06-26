@@ -1,0 +1,6 @@
+docker/docker-compose-dev.yaml
+Phantom_BE/PhantomBE
+Phantom_BE/test/sql_test/
+go.sum
+.env
+/docker/servers.json

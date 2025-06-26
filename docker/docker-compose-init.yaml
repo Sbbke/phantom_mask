@@ -1,0 +1,22 @@
+
+services:
+  init-migrate-schema:
+    image: phantom-be:latest
+    env_file:
+      - .env
+    command: ["./PhantomBE", "migrateSchema"]
+  init-preprocess:
+    image: phantom-be:latest
+    env_file:
+      - .env
+    command: ["sh", "-c", "./PhantomBE initUsers && ./PhantomBE initPharmacies"]
+    depends_on:
+      init-migrate-schema:
+        condition: service_completed_successfully
+    volumes:
+      - ../data:/opt/data
+
+networks:
+  default:
+    name: phantom-mask
+    external: true
