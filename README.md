@@ -18,4 +18,8 @@ Please read [`system_architecture.md`](./doc/system_architecture.md) for more de
 
 ---
 
+## To Do List
+- [ ] Access Control
+- [ ] Read Cache
+
 
